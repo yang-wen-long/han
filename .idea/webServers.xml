@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2c9f4c34-a835-4f8d-8f98-dad5b6ee4c88" name="yang" url="http://1910ywl.comcto.com/">
+        <fileTransfer host="1910ywl.comcto.com" port="22" rootFolder="/wwwroot" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
