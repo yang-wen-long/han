@@ -91,6 +91,7 @@ class IndexController extends Controller
         }
         dd("页面正在检修，请稍后在来");
     }
+    //登录后的
     public function center(){
         if(!isset($_COOKIE["pid"])){
             return redirect("/Login")->with("get","请先登录!");
@@ -98,11 +99,17 @@ class IndexController extends Controller
         dump(date("Y-m-d H:i:s",time()+10));
         dd("接电话");
 
-
-
-        
     }
 
+    public function time(){
+//        dd("JDFH ");
+        $data=[
+            "name"=>"yangwenlong",
+            "pwd"=>"zhao"
+        ];
+        echo json_encode($data);
+
+    }
     
     
     
