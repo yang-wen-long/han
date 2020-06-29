@@ -151,12 +151,14 @@ class UserController extends Controller
             $mdpump = $desc -> user_id . $desc -> user_name . time();
             //进行加密剪切
             $token = substr(md5($resmd),16,16) . substr(md5($mdpump),20,12);
+            /*【将数据存到数据库
             $data = [
                 "user_id"=>$desc->user_id,
                 "token"=>$token,
                 "time"=>time()
             ];
-            Token::insert($data);
+            Token::insert($data)】*/;
+            Redis::set($token,$desc->user_id);
             $response = [
                 "error" => 0,
                 "msg"   => "登录成功",
@@ -176,11 +178,12 @@ class UserController extends Controller
     **/
     public function center(){
         $token = $_GET["token"];
-        $res = Token::where("token",$token)->first();
+        //根据token进数据库查询是否存在
+        //$res = Token::where("token",$token)->first();
+        $res = Redis::get($token);
         if($res){
             //已登陆
-            $user_id = $res->user_id;
-            $user_name = Users::where("user_id",$user_id)->value("user_name");
+            $user_name = Users::where("user_id",$res)->value("user_name");
             echo "欢迎".$user_name."来到个人中心";
         }else{
             //未登录
