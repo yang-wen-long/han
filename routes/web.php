@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//测试扩展名称
+Route::get('/info', function () {
+    phpinfo();
+});
+
 //后台管理方法
 Route::get("/Login","Admin\IndexController@index");    //后台登录方法
 Route::post("/desc/login","Admin\IndexController@login");    //后台登录方法
@@ -30,6 +36,7 @@ Route::get("/Api/user/center","Api\UserController@center");   //前台登录成�
 
 
 
+///usr/local/php/lib/php/extensions/no-debug-non-zts-20180731
 
 
 
@@ -37,7 +44,8 @@ Route::get("/Api/user/center","Api\UserController@center");   //前台登录成�
 
 
 
-
+//验签方法
+Route::any("/redis","Admin\IndexController@redis");
 
 
 

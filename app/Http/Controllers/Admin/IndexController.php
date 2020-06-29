@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Model\Users;
 //COOKIE
 use Illuminate\Support\Facades\Cookie;
+//REDIS
+use Illuminate\Support\Facades\Redis;
 class IndexController extends Controller
 {
     //页面
@@ -100,17 +102,24 @@ class IndexController extends Controller
         dd("接电话");
 
     }
-
+    //测试方法
     public function time(){
-//        dd("JDFH ");
-        $data=[
-            "name"=>"yangwenlong",
-            "pwd"=>"zhao"
-        ];
-        echo json_encode($data);
+        $data="name";
+        $value=Redis::get($data);
+        echo '$value:'.$value;
+//        $data=[
+//            "name"=>"yangwenlong",
+//            "pwd"=>"zhao"
+//        ];
+//        echo json_encode($data);
 
     }
-    
+    //验签方法
+    public function redis(){
+        $name = "杨文龙";
+        $redis = MD5($name);
+        dd($redis);
+    }
     
     
     
