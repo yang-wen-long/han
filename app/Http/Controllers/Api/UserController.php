@@ -151,14 +151,16 @@ class UserController extends Controller
             $mdpump = $desc -> user_id . $desc -> user_name . time();
             //进行加密剪切
             $token = substr(md5($resmd),16,16) . substr(md5($mdpump),20,12);
-            /*【将数据存到数据库
-            $data = [
-                "user_id"=>$desc->user_id,
-                "token"=>$token,
-                "time"=>time()
-            ];
-            Token::insert($data)】*/;
             Redis::set($token,$desc->user_id);
+            Redis::expire($token,7200);
+            /*【将数据存到数据库
+                $data = [
+                    "user_id" => $desc->user_id,
+                    "token"   => $token,
+                    "time"    => time() + 7200
+                ];
+             Token::insert($data)】*/;
+            //返回数据类型
             $response = [
                 "error" => 0,
                 "msg"   => "登录成功",
@@ -173,27 +175,87 @@ class UserController extends Controller
         return $response;
     }
     /*
-    *登录完成
+    *个人中心
     **@param Request $request
     **/
     public function center(){
-        $token = $_GET["token"];
+        $token = request()->input("token");
+        $res = Redis::get($token);
         //根据token进数据库查询是否存在
         //$res = Token::where("token",$token)->first();
-        $res = Redis::get($token);
         if($res){
             //已登陆
             $user_name = Users::where("user_id",$res)->value("user_name");
             echo "欢迎".$user_name."来到个人中心";
         }else{
             //未登录
-            echo "未登录";
+            $response = [
+                "error" => 50013,
+                "msg"   => "请先登录"
+            ];
+            return $response;
         }
 
+
+
     }
-
-
-
+    /*
+     * 我的订单
+     */
+    public function orders(){
+        $token = request()->input("token");
+        $res = Redis::get($token);
+        //根据token进数据库查询是否存在
+        //$res = Token::where("token",$token)->first();
+        if($res){
+            //已登陆
+            $response = [
+                "error" => 0,
+                "msg" => "我的订单",
+                "data" =>[
+                    "name" => "杨文龙",
+                    "data" => "商品",
+                    "time" => "1592871055"
+                ]
+            ];
+        }else{
+            //未登录
+            $response = [
+                "error" => 50013,
+                "msg"   => "请先登录"
+            ];
+            return $response;
+        }
+    }
+    /*
+     *我的购物车
+     */
+    public function cart(){
+        $token = request()->input("token");
+        $res = Redis::get($token);
+        //根据token进数据库查询是否存在
+        //$res = Token::where("token",$token)->first();
+        if($res){
+            //已登录
+            $response = [
+                "error" => 0,
+                "msg"   => "查询成功我的购物车",
+                "data" =>[
+                    "name" => "杨文龙",
+                    "data" => "商品",
+                    "time" => "1592871055"
+                ]
+            ];
+            return $response;
+        }else{
+            //未登录
+            $response = [
+                "error" => 50013,
+                "msg"   => "请先登录"
+            ];
+            return $response;
+        }
+    }
 
 
 

@@ -32,13 +32,15 @@ Route::any("/user/center","Admin\IndexController@center");   //后台成功登�
 //前台管理方法
 Route::post("/Api/user/reg","Api\UserController@reg");   //前台注册的方法
 Route::post("/Api/user/login","Api\UserController@login");   //前台登录的方法
-Route::get("/Api/user/center","Api\UserController@center");   //前台登录成功
 
+Route::prefix("/Api/user/")->middleware("isredis")->group(function () {
 
+    Route::get("/center","Api\UserController@center");   //个人中心接口
 
-///usr/local/php/lib/php/extensions/no-debug-non-zts-20180731
+    Route::get("/orders","Api\UserController@orders");   //我的订单接口
 
-
+    Route::get("/cart", "Api\UserController@cart");//我的购物车接口
+});
 
 
 
